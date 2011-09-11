@@ -11,7 +11,7 @@ LHF_SERVER_ADDR = 'livehomefreeprod.appspot.com:80'
 
 
 def testAlert():
-  params = urllib.urlencode({'cmd': 'alert', 'phone': '1111111111'})
+  params = urllib.urlencode({'cmd': 'alert', 'phone': '2222222222'})
   headers = {"Content-type": "application/x-www-form-urlencoded",
              "Accept": "text/plain"}
   conn = httplib.HTTPConnection(LHF_SERVER_ADDR)
