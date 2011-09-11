@@ -5,12 +5,13 @@ import getopt
 import httplib, urllib
 import sys
 
-
-LHF_SERVER_ADDR = 'swlivehomefree.appspot.com:80'
+#LHF_SERVER_ADDR = 'swlivehomefree2.appspot.com:80'
+#LHF_SERVER_ADDR = 'localhost:8083'
+LHF_SERVER_ADDR = 'livehomefreeprod.appspot.com:80'
 
 
 def testAlert():
-  params = urllib.urlencode({'cmd': 'alert', 'phone': '763-742-6596'})
+  params = urllib.urlencode({'cmd': 'alert', 'phone': '1111111111'})
   headers = {"Content-type": "application/x-www-form-urlencoded",
              "Accept": "text/plain"}
   conn = httplib.HTTPConnection(LHF_SERVER_ADDR)
@@ -23,8 +24,8 @@ def testAlert():
 
 
 def testConfigure():
-  params = urllib.urlencode({'cmd': 'configure', 'phone': '763-742-6596',
-                             'primary_phone': '408-431-2586',
+  params = urllib.urlencode({'cmd': 'configure', 'phone': '7637426596',
+                             'primary_phone': '4084312586',
                              'primary_email': 'adityao@gmail.com'})
   headers = {"Content-type": "application/x-www-form-urlencoded",
              "Accept": "text/plain"}
