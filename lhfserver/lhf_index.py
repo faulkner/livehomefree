@@ -42,7 +42,8 @@ class MainPage(webapp.RequestHandler):
     try:
       template_values = { 'title': "LiveHomeFree", }
       #path = os.path.join(os.path.dirname(__file__), 'index.html')
-      path = os.path.join(os.path.dirname(__file__), 'live-home-free-alert-configuration.htm')
+      #path = os.path.join(os.path.dirname(__file__), 'live-home-free-alert-configuration.htm')
+      path = os.path.join(os.path.dirname(__file__), 'templates/configure.html')
       self.response.out.write(template.render(path, template_values))
     except DeadlineExceededError:
       self.response.clear()
@@ -76,8 +77,8 @@ class MainPage(webapp.RequestHandler):
 
   def _HandleConfigure(self):
     """Handle configuration update from website/app."""
-    phone = self.request.get('phone')
-    p_phone = self.request.get('primary_phone')
+    phone = self.request.get('phone') + self.request.get('phone-1') + self.request.get('phone-2')
+    p_phone = self.request.get('primary_phone') + self.request.get('primary_phone-1') + self.request.get('primary_phone-2')
     p_email = self.request.get('primary_email')
     if phone:
       self.response.out.write('Recd monitor config for phone num: %s\n' % phone)
