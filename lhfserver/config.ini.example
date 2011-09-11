@@ -1,0 +1,7 @@
+twillio_account = xxxxxxxxxxxxxxxxxx
+twillio_token = xxxxxxxxxxxxxxxxxxxx
+twillio_from_phone =
+twillio_from_sms = 4155992671
+twillio_call_url = http://faulkner.io/sw/app/call.xml
+
+from_email = bot@localhost

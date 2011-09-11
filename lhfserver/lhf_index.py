@@ -11,6 +11,8 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.runtime import DeadlineExceededError
 #from django.http import HttpResponse
 
+from notify import Notify
+from configobj import ConfigObj
 
 class MonitorRecord(object):
   """Monitor DB Record."""
@@ -53,6 +55,15 @@ class MainPage(webapp.RequestHandler):
   def _AlertDestination(self, phone, mr):
     """Send alert notification to the registered destination."""
     self.response.out.write('Send alert to dst email: %s\n' % mr.dst_email_addr)
+
+    # TODO: less-ugly config management
+    config = ConfigObj('config.ini')
+    os.environ["TWILIO_ACCOUNT_SID"] = config['twillio_account']
+    os.environ["TWILIO_AUTH_TOKEN"] = config['twillio_token']
+
+    n = Notify(config)
+    n.sms(phone, 'Please contact %s ASAP!' % phone)
+
     mail.send_mail(sender='Live Home Free<livehomefreesw@gmail.com>',
                    to=mr.dst_email_addr,
                    subject='URGENT!! Alert from %s' % phone,
