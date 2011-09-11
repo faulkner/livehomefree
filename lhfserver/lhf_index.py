@@ -89,12 +89,11 @@ class MainPage(webapp.RequestHandler):
     logging.debug('sender: %s\nto: %s\nsub: %s\nbody: %s' % (s, mr.primary_email, sub, body))
 
     # TODO: less-ugly config management
-#     config = ConfigObj('config.ini')
-#     os.environ["TWILIO_ACCOUNT_SID"] = config['twillio_account']
-#     os.environ["TWILIO_AUTH_TOKEN"] = config['twillio_token']
-
-#     n = Notify(config)
-#     n.sms(phone, 'Please contact %s ASAP!' % phone)
+    config = ConfigObj('config.ini')
+    os.environ["TWILIO_ACCOUNT_SID"] = config['twillio_account']
+    os.environ["TWILIO_AUTH_TOKEN"] = config['twillio_token']
+    n = Notify(config)
+    n.sms(mr.primary_phone, 'Please contact %s ASAP!' % phone)
 
     self.response.out.write('Send alert to dst email: %s\n' % mr.primary_email)
     # TODO: enable for demo
