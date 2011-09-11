@@ -82,7 +82,7 @@ class MainPage(webapp.RequestHandler):
 
   def _AlertDestination(self, phone, mr):
     """Send alert notification to the registered destination."""
-    self.response.out.write('Send alert to dst email: %s\n' % mr.primary_email)
+    #self.response.out.write('Send alert to dst email: %s\n' % mr.primary_email)
     s = 'Live Home Free<livehomefreesw@gmail.com>'
     sub = 'URGENT!! Alert from %s' % phone
     body = 'Please contact %s ASAP!' % phone
@@ -133,30 +133,40 @@ class MainPage(webapp.RequestHandler):
     p_phone = self.request.get('primary_phone') + self.request.get('primary_phone-1') + self.request.get('primary_phone-2')
     p_email = self.request.get('primary_email')
     if phone:
-      self.response.out.write('Recd monitor config for phone num: %s\n' % phone)
+      #self.response.out.write('Recd monitor config for phone num: %s\n' % phone)
       #mr = mdb.mdb_dict.get(phone)
       mrecs = db.GqlQuery("SELECT * FROM MonitorDB WHERE phone = :1",
                        phone)
 #       if len(mr) > 1:
 #         self.response.out.write('More than 1 monitor config for phone num: %s\n' % phone)
 #         return
+
+      local_recs = []
       for mr in mrecs:
+        local_recs.append(mr)
+
+      if local_recs:
+        mr = local_recs[0]
         # exists, update
-        self.response.out.write('Update record for phone num: %s\n' % phone)
+        #self.response.out.write('Update record for phone num: %s\n' % phone)
         #mr.update(p_phone, p_email)
         mr.primary_phone = p_phone
         mr.primary_email = p_email
         db.put(mr)
-        return
-      
-      # new entry, create and add it to db
-      self.response.out.write('Create record for phone num: %s\n' % phone)
+      else:
+        # new entry, create and add it to db
+      #self.response.out.write('Create record for phone num: %s\n' % phone)
         #mr = MonitorRecord(p_phone, p_email)
         #mdb.mdb_dict[phone] = mr
-      mr = MonitorDB(phone=phone,
-                     primary_phone=p_phone,
-                     primary_email=p_email)
-      mr.put()
+        mr = MonitorDB(phone=phone,
+                       primary_phone=p_phone,
+                       primary_email=p_email)
+        mr.put()
+
+      # render template
+      path = os.path.join(os.path.dirname(__file__), 'templates/configure.html')
+      self.response.out.write(template.render(path, {"message" : "Successfully added monitoring for %s" % phone} ))
+
     else:
       self.response.out.write('Bad phone number %s in POST\n' % phone)
 
@@ -164,7 +174,7 @@ class MainPage(webapp.RequestHandler):
     """Handler for HTTP POST."""
     try:
       cmd = self.request.get('cmd')
-      self.response.out.write('Recd cmd %s\n'% cmd)
+      #self.response.out.write('Recd cmd %s\n'% cmd)
 
       # Configuration create/update from config UI on web-server/app
       if cmd == 'configure':
